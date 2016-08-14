@@ -2,15 +2,13 @@ package esdemo
 
 class Post {
 
-    String name
-    String description
+    String subject
+    String body
 
-    static constraints = {
-        description nullable: true
-    }
-
-    static searchable  = {
-        name boost: 2
+    static searchable = {
+        all = [analyzer: 'repl_analyzer']
+        subject analyzer: 'test_analyzer'
+        body analyzer: 'test_analyzer'
     }
 
 }

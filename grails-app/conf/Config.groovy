@@ -185,7 +185,37 @@ environments {
     test {
         elasticSearch {
             client.mode = 'local'
-            index.store.type = 'simplefs' // store local node in memory and not on disk
+            index {
+                store.type = 'simplefs' // store local node in memory and not on disk
+                analysis {
+                    filter {
+                        replace_synonyms {
+                            type = 'synonym'
+                            synonyms = [
+                                    'abc => xyz'
+                            ]
+                        }
+                    }
+
+                    analyzer {
+                        test_analyzer {
+                            tokenizer = 'standard'
+                            filter = [
+                                    'lowercase'
+                            ]
+                        }
+                        repl_analyzer {
+                            tokenizer = 'standard'
+                            filter = [
+                                    'lowercase',
+                                    'replace_synonyms'
+                            ]
+                        }
+                    }
+                }
+            }
+
+
         }
     }
     production {
