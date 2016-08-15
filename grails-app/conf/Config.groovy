@@ -175,12 +175,46 @@ elasticSearch {
 
 environments {
     development {
-        /**
-         * Possible values : "local", "node", "dataNode", "transport"
-         * If set to null, "node" mode is used by default.
-         */
-        elasticSearch.client.mode = 'node'
-        elasticSearch.cluster.name = 'elasticsearch_puneet'
+        elasticSearch {
+            /**
+             * Possible values : "local", "node", "dataNode", "transport"
+             * If set to null, "node" mode is used by default.
+             */
+            client.mode = 'node'
+            cluster.name = 'elasticsearch_puneet'
+            settings {
+
+            }
+            index {
+                store.type = 'simplefs' // store local node in memory and not on disk
+                analysis {
+                    filter {
+                        replace_synonyms {
+                            type = 'synonym'
+                            synonyms = [
+                                    'abc => xyz'
+                            ]
+                        }
+                    }
+
+                    analyzer {
+                        test_analyzer {
+                            tokenizer = 'standard'
+                            filter = [
+                                    'lowercase'
+                            ]
+                        }
+                        repl_analyzer {
+                            tokenizer = 'standard'
+                            filter = [
+                                    'lowercase',
+                                    'replace_synonyms'
+                            ]
+                        }
+                    }
+                }
+            }
+        }
     }
     test {
         elasticSearch {
