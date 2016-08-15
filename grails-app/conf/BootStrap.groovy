@@ -5,7 +5,7 @@ class BootStrap {
     def init = { servletContext ->
 
         5.times {
-            new Post(name: "Post$it").save(flush: true)
+            new Post(subject: "Post$it").save(flush: true)
         }
 
     }
